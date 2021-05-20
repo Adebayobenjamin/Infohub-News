@@ -1,0 +1,90 @@
+<%- include('partials/header2') %>
+
+<!-- content
+================================================== -->
+<section class="s-content">
+
+<div class="row">
+<div class="column large-12">
+
+<form name="form" id="form" class="s-content__form" method="post" action="">
+    <h2>Log in</h2>
+    <fieldset>
+
+        <div class="form-field">
+            <input name="email" type="text" class="h-full-width h-remove-bottom" placeholder="Your Email" value="">
+            <div class="err email"></div>
+        </div>
+
+        <div class="form-field">
+            <input name="password" type="password"  class="h-full-width h-remove-bottom" placeholder="Password"  value="">
+            <div class="err password"></div>
+        </div>
+       
+
+        <br>
+        <button type="submit" class="submit btn btn--primary h-full-width" id="submit">Submit</button>
+        <p style="text-align: center;"> Don't have an account ? <a href="/signup">Sign up</a></p>
+    </fieldset>
+</form> <!-- end form -->
+
+</div> <!-- end s-entry__page-content -->
+
+</div> <!-- end s-content__primary -->
+</article> <!-- end entry -->
+
+</div> <!-- end column -->
+</div> <!-- end row -->
+
+</section> <!-- end s-content -->
+
+<script>
+    const form = document.getElementById('form');
+    
+    // add submit event to form
+    form.addEventListener('submit', (e)=>{
+
+        e.preventDefault();
+
+        const email = form.email.value;
+        const password = form.password.value;
+        
+
+    const emailError = document.querySelector('.err.email');
+    const passwordError = document.querySelector('.err.password');
+    emailError.textContent = '';
+    passwordError.textContent = '';
+    const submitBtn = document.getElementById('submit');
+    const formData = {
+        email,
+        password
+    }
+// create loader
+submitBtn.innerHTML = "Logging in....";
+
+//reset errors
+emailError.textContent = '';
+passwordError.textContent = '';
+  fetch('/login', {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {"Content-Type": "application/json"}
+  }).then(response=>{
+      response.json().then(data=>{
+          submitBtn.innerHTML = "SUBMIT"
+        if(data.user){
+            location.assign('/')
+        }
+        if(data.errors){
+            emailError.textContent = data.errors.email;
+            passwordError.textContent = data.errors.password
+        }
+              
+          }
+      )
+  }).catch(err=> console.log(err))
+        
+    });
+</script>
+
+<%- include('partials/footer') %> 

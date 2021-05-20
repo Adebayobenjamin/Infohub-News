@@ -1,0 +1,91 @@
+<%- include ('partials/header2.ejs') %> 
+    <!-- hero
+    ================================================== -->
+
+    <% const articles = data %> 
+   
+    
+    <!-- content
+    ================================================== -->
+    <section class="s-content s-content--no-top-padding">
+        
+
+        <!-- masonry
+        ================================================== -->
+        <div class="s-bricks">
+            <h2 style="text-align: center;"><%= category %> </h2>
+            <div class="masonry">
+                <div class="bricks-wrapper h-group">
+
+                    <div class="grid-sizer"></div>
+
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                   <% for(i=0; i< 20; i++){ var article = articles[i] %>
+                    
+                    <article class="brick entry" data-aos="fade-up">
+    
+                        <div class="entry__thumb">
+                            <a href="#" class="thumb-link">
+                                <img src="<%= article.urlToImage%>" alt="">
+                            </a>
+                        </div> <!-- end entry__thumb -->
+    
+                        <div class="entry__text">
+                            <div class="entry__header">
+                                <h1 class="entry__title"><a href=""></a></h1>
+                                
+                                <div class="entry__meta">
+                                    <span class="byline"">By:
+                                        <span class='author'>
+                                            <a ><%= article.author%> </a>
+                                    </span>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="entry__excerpt">
+                                <p>
+                                    <%= article.description%> 
+                                </p>
+                            </div>
+                            <a class="entry__more-link reader" href="/reader?q=<%=article.description %>" data-url="/reader?q=<%=article.description%>" data-link="<%=article.url%>">Learn More</a>
+                        </div> <!-- end entry__text -->
+                    
+                    </article> <!-- end article -->
+
+                  <% } %> 
+
+                </div> <!-- end brick-wrapper -->
+
+            </div> <!-- end masonry -->
+
+            <div class="row">
+                <div class="column large-12">
+                </div> <!-- end column -->
+            </div> <!-- end row -->
+
+        </div> <!-- end s-bricks -->
+
+    </section> <!-- end s-content -->
+    <script>
+        const readerlink = document.getElementsByClassName('reader');
+        for (let i = 0; i < readerlink.length; i++) {
+            const reader = readerlink[i];
+            reader.addEventListener('click', (e)=>{
+                e.preventDefault();
+                const url = reader.dataset.url;
+                const link = reader.dataset.link
+                var trimurl = url.substr(0, 95);
+                // to remove the error that occurs when the linl ends with and / or .
+                if(trimurl.endsWith('and') || trimurl.endsWith('or')){
+                    trimurl = trimurl.substr(0, 90);
+                }
+                location.assign(trimurl + '&link=' + link);
+            })           
+        }
+    </script>
+
+<%- include ('partials/footer.ejs') %> 
